@@ -30,7 +30,7 @@ const displaySearchResult = books =>{
      
     if (books.length !== 0) {
         const searchResult = document.getElementById('search-result');
-        searchResult.textContent= '';
+        searchResult.innerHTML= '';
     
     // clear error message
     document.getElementById('notFound').textContent ='';
@@ -67,6 +67,4 @@ const displaySearchResult = books =>{
     
 
     
-    
 }
-
