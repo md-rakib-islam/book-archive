@@ -4,49 +4,54 @@ const searchBook = () => {
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
     console.log(searchText);
-    searchField.value= ''
-    const url = `http://openlibrary.org/search.json?q=${searchText}`;
-    fetch(url)
+    // Clear searchText
+    searchField.value= '';
+    document.getElementById('notFound').textContent ='';
+    if (searchText === '' || searchText == parseInt(searchText) ){
+        document.getElementById('numFound').innerText = `Not acceptable empty or number. 
+        Please input right text`;
+    }
+    else{
+        document.getElementById('numFound').textContent='';
+        const url = `http://openlibrary.org/search.json?q=${searchText}`;
+        fetch(url)
     
-    .then(res => res.json())
-    .then (data => displaySearchResult(data.docs))
+        .then(res => res.json())
+        .then (data => displaySearchResult(data.docs))
+    }
 }
 
 // Display searchBook section
 
 const displaySearchResult = books =>{
-    console.log(books.title);
+    
     // Display searchBook Counting
     document.getElementById('search-count').innerHTML= `<p >Total items found: ${books.length}  </p>`;
      
-    // if (books.numFound === 0) {
-    //     document.getElementById('numFound').innerHTML = `<h4>No Result Found</h4>`;
-    // }
-    // else {
-    //     document.getElementById('numFound').innerHTML = `<h4>Found 
-    //     ${books.numFound} Results</h4>`;
-    // }
+    if (books.length !== 0) {
+        const searchResult = document.getElementById('search-result');
+        searchResult.textContent= '';
+    
+    // clear error message
+    document.getElementById('notFound').textContent ='';
 
-    const searchResult = document.getElementById('search-result');
-    searchResult.innerHTML= '';
     // Book List
     books.forEach(book => {
-        console.log(book);
 
         const div = document.createElement('div');
         div.classList.add('col');
         div.innerHTML= `
-        <div  class="card m-4">
+        <div  class="card m-4 border border-success border-4 rounded-3">
                 
-                <div class="card-body  text-center">
+                <div class="card-body  text-center border rounded-3">
                     <h4>Book Details</h4>
                     
-                    <img src="https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg">
+                    <img height=300 weight=300 src="https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg">
                     
-                    <h5 class="card-title">Book Name: ${book.title}</h5>
-                    <h6 class="card-text">Author Name: ${book.author_name?.shift()}</h6>
-                    <h6 class="card-text">Publisher: ${book.publisher?.shift()}</h6>
-                    <h6 class="card-text">Published Year: ${book.first_publish_year}</h6>
+                    <h5 class="card-title">Book Name: ${book.title.slice(0,30)}</h5>
+                    <h6 class="card-text">Author Name: ${book.author_name?.shift()||'Author Name Not Available'}</h6>
+                    <h6 class="card-text">Publisher: ${book.publisher?.shift()|| 'Not available Publisher'}</h6>
+                    <h6 class="card-text">Published Year: ${book.first_publish_year|| 'Not available Year'}</h6>
                     
                 </div>
         </div>
@@ -55,6 +60,13 @@ const displaySearchResult = books =>{
         
         
     });
+    }
+    else{
+        document.getElementById('notFound').innerText = `Not available contant`;
+    }
+    
+
+    
     
 }
 
