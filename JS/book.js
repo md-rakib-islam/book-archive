@@ -14,10 +14,10 @@ const searchBook = () => {
     else{
         document.getElementById('numFound').textContent='';
         const url = `http://openlibrary.org/search.json?q=${searchText}`;
+        
         fetch(url)
-    
         .then(res => res.json())
-        .then (data => displaySearchResult(data.docs))
+        .then (data => displaySearchResult(data.docs));
     }
 }
 
