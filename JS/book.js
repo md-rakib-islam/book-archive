@@ -3,7 +3,7 @@
 const searchBook = () => {
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
-    console.log(searchText);
+    // console.log(searchText);
     // Clear searchText
     searchField.value= '';
     document.getElementById('notFound').textContent ='';
